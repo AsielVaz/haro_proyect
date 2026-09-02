@@ -1,0 +1,71 @@
+[27-Jun-2022 16:01:56 UTC] PHP Fatal error:  Uncaught Error: Class "GuzzleHttp\Client" not found in /home/iohanes/public_html/haroframework/apiAutos/api/soloAutos.php:4
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/soloAutos.php on line 4
+[01-Jul-2022 16:41:59 UTC] PHP Warning:  include_once(adminUsuarios.php): Failed to open stream: No such file or directory in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 16:41:59 UTC] PHP Warning:  include_once(): Failed opening 'adminUsuarios.php' for inclusion (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 16:41:59 UTC] PHP Fatal error:  Uncaught Error: Class "administradorUsuarios" not found in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:76
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 16:42:38 UTC] PHP Warning:  Undefined array key "correo" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 16:42:38 UTC] PHP Warning:  Undefined array key "fecha" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 16:42:38 UTC] PHP Warning:  Undefined variable $admin in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 78
+[01-Jul-2022 16:42:38 UTC] PHP Fatal error:  Uncaught Error: Call to a member function existeUsuario() on null in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:78
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 78
+[01-Jul-2022 16:43:22 UTC] PHP Warning:  Undefined array key "correo" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 16:43:22 UTC] PHP Warning:  Undefined array key "fecha" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 16:43:22 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 992
+[01-Jul-2022 16:43:22 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 993
+[01-Jul-2022 16:43:22 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, string given in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:65
+Stack trace:
+#0 /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php(86): mailer(NULL, NULL, 'Recuperaci\xC3\xB3n d...', '<html><body><p>...', '', '', '')
+#1 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 65
+[01-Jul-2022 17:10:45 UTC] PHP Warning:  Undefined array key "correo" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 17:10:45 UTC] PHP Warning:  Undefined array key "fecha" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 17:10:45 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 992
+[01-Jul-2022 17:10:45 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 993
+[01-Jul-2022 17:10:45 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, string given in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:65
+Stack trace:
+#0 /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php(86): mailer(NULL, NULL, 'Recuperaci\xC3\xB3n d...', '<html><body><p>...', '', '', '')
+#1 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 65
+[01-Jul-2022 17:11:16 UTC] PHP Warning:  Undefined array key "correo" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 17:11:16 UTC] PHP Warning:  Undefined array key "fecha" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 17:11:16 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 992
+[01-Jul-2022 17:11:16 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 993
+[01-Jul-2022 17:11:16 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, string given in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:65
+Stack trace:
+#0 /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php(86): mailer(NULL, NULL, 'Recuperaci\xC3\xB3n d...', '<html><body><p>...', '', '', '')
+#1 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 65
+[01-Jul-2022 17:11:45 UTC] PHP Warning:  Undefined array key "correo" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 17:11:45 UTC] PHP Warning:  Undefined array key "fecha" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 17:11:45 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 992
+[01-Jul-2022 17:11:45 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 993
+[01-Jul-2022 17:11:45 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, string given in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:65
+Stack trace:
+#0 /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php(86): mailer(NULL, NULL, 'Recuperaci\xC3\xB3n d...', '<html><body><p>...', '', '', '')
+#1 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 65
+[01-Jul-2022 17:11:47 UTC] PHP Warning:  Undefined array key "correo" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 17:11:47 UTC] PHP Warning:  Undefined array key "fecha" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 17:11:47 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 992
+[01-Jul-2022 17:11:47 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 993
+[01-Jul-2022 17:11:47 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, string given in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:65
+Stack trace:
+#0 /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php(86): mailer(NULL, NULL, 'Recuperaci\xC3\xB3n d...', '<html><body><p>...', '', '', '')
+#1 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 65
+[01-Jul-2022 17:13:37 UTC] PHP Warning:  Undefined array key "correo" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 75
+[01-Jul-2022 17:13:37 UTC] PHP Warning:  Undefined array key "fecha" in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 76
+[01-Jul-2022 17:13:37 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 992
+[01-Jul-2022 17:13:37 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in /home/iohanes/public_html/haroframework/apiAutos/api/mailer/src/PHPMailer.php on line 993
+[01-Jul-2022 17:13:37 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, string given in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php:65
+Stack trace:
+#0 /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php(86): mailer(NULL, NULL, 'Recuperaci\xC3\xB3n d...', '<html><body><p>...', '', '', '')
+#1 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/api/contactoMailer.php on line 65

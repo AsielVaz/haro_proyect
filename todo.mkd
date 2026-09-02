@@ -1,0 +1,1 @@
+# arreglar las imagenes de el index media queries img-fluid width y height

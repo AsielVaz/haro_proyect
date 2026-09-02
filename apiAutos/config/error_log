@@ -1,0 +1,56 @@
+[20-Mar-2024 05:01:18 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[20-Mar-2024 05:01:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[25-Apr-2024 18:13:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[27-Apr-2024 00:31:54 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[05-May-2024 01:52:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[05-May-2024 01:52:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[09-Jun-2024 19:13:19 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[09-Jun-2024 19:13:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[13-Jun-2024 16:40:32 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[14-Jun-2024 12:20:27 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[23-Jun-2024 00:17:41 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/database.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/database.php on line 18
+[07-Aug-2024 23:21:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[23-Aug-2024 12:44:02 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
+[23-Aug-2024 12:44:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/iohanes/public_html/haroframework/apiAutos/config/cache.php on line 18
