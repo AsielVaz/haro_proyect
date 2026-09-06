@@ -30,20 +30,20 @@
                 @endif
             </div>
             <button type="button" class="liquid-alert__close" data-alert-close aria-label="Cerrar alerta">×</button>
-            <span class="liquid-alert__timer"></span>
+            @if($alert['type'] === 'success')<span class="liquid-alert__timer"></span>@endif
         </article>
     @endforeach
 </div>
 
-<dialog class="liquid-confirm" data-confirm-dialog>
+<dialog class="liquid-confirm" data-confirm-dialog aria-labelledby="confirm-title" aria-describedby="confirm-message">
     <div class="liquid-confirm__orb"></div>
     <div class="relative">
         <span class="liquid-confirm__icon" data-confirm-icon>!</span>
         <p class="eyebrow mt-5">Confirmar operación</p>
-        <h2 class="mt-1 text-2xl font-black" data-confirm-title>¿Deseas continuar?</h2>
-        <p class="mt-3 text-sm leading-6 text-zinc-400" data-confirm-message>Esta acción modificará la información del sistema.</p>
+        <h2 class="mt-1 text-2xl font-black" id="confirm-title" data-confirm-title>¿Deseas continuar?</h2>
+        <p class="mt-3 text-sm leading-6 text-slate-600" id="confirm-message" data-confirm-message>Esta acción modificará la información del sistema.</p>
         <div class="mt-7 flex justify-end gap-3">
-            <button type="button" class="btn-secondary" data-confirm-cancel>Cancelar</button>
+            <button type="button" class="btn-secondary" data-confirm-cancel autofocus>Cancelar</button>
             <button type="button" class="btn-primary" data-confirm-accept>Confirmar</button>
         </div>
     </div>

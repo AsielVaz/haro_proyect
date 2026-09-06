@@ -4,7 +4,7 @@
 <details class="panel mb-7" {{ $errors->any() || request()->filled('auto') ? 'open' : '' }}>
     <summary class="flex cursor-pointer list-none items-center justify-between">
         <div><p class="eyebrow">Nuevo registro</p><h3>Agregar a {{ strtolower($title) }}</h3></div>
-        <span class="btn-primary">+ CAPTURAR</span>
+        <span class="btn-primary">+ Agregar</span>
     </summary>
     <form method="POST" action="{{ route('operaciones.store', $seccion) }}" class="form-grid mt-7">
         @csrf
@@ -55,21 +55,21 @@
             <label class="field"><span>Teléfono</span><input name="telefono" value="{{ old('telefono') }}"></label>
             <label class="field"><span>Perfil</span><select name="permiso_banca" required><option>Banca</option><option>Cashier</option></select></label>
         @endif
-        <div class="flex items-end"><button class="btn-primary" type="submit">GUARDAR REGISTRO</button></div>
+        <div class="flex items-end"><button class="btn-primary" type="submit">Guardar registro</button></div>
     </form>
 </details>
 
 <section class="panel overflow-hidden p-0">
     <div class="panel-heading p-6"><div><p class="eyebrow">Operación</p><h3>{{ $title }}</h3></div><span class="badge badge-amber">{{ $records->total() }} REGISTROS</span></div>
     @if(in_array($seccion, ['ventas', 'pagos'], true))
-        <div class="flex flex-wrap gap-2 border-b border-white/10 px-6 pb-5">
-            <a class="btn-secondary" href="{{ route('operaciones.index', $seccion) }}">Todos</a>
+        <div class="flex flex-wrap gap-2 border-b border-slate-200 px-6 pb-5">
+            <a class="btn-secondary" @if(!request('estado')) aria-current="page" @endif href="{{ route('operaciones.index', $seccion) }}">Todos</a>
             @foreach($seccion === 'ventas' ? ['Pendiente', 'Liquidada'] : ['Pendiente', 'Aprobado'] as $status)
-                <a class="btn-secondary" href="{{ route('operaciones.index', [$seccion, 'estado' => $status]) }}">{{ $status }}</a>
+                <a class="btn-secondary" @if(request('estado') === $status) aria-current="page" @endif href="{{ route('operaciones.index', [$seccion, 'estado' => $status]) }}">{{ $status }}</a>
             @endforeach
         </div>
     @endif
-    <div class="overflow-x-auto"><table class="data-table"><thead><tr>@foreach($columns as $label)<th>{{ $label }}</th>@endforeach @if($seccion === 'pagos')<th>Acciones</th>@endif</tr></thead><tbody>@forelse($records as $record)<tr>@foreach(array_keys($columns) as $column)<td>@if(in_array($column,['precio_pactado','pago_inicial','monto','comision'],true))${{ number_format((float)$record->{$column},2) }}@else{{ $record->{$column} }}@endif</td>@endforeach @if($seccion === 'pagos')<td>@if($record->estatus === 'Pendiente' && session('haro_admin.permiso') === 'Banca')<form method="POST" action="{{ route('pagos.approve', $record) }}" data-confirm="Se aprobará el pago #{{ $record->id }} por ${{ number_format((float) $record->monto, 2) }} y se recalculará el saldo de la venta." data-confirm-title="¿Aprobar pago?" data-confirm-action="Aprobar pago">@csrf @method('PATCH')<button class="btn-primary" type="submit">APROBAR</button></form>@elseif($record->estatus === 'Aprobado')<span class="badge badge-green">APROBADO</span>@else<span class="badge badge-amber">PENDIENTE</span>@endif</td>@endif</tr>@empty<tr><td colspan="{{ count($columns) + ($seccion === 'pagos' ? 1 : 0) }}" class="text-center text-zinc-500">Sin registros</td></tr>@endforelse</tbody></table></div>
+    <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Tabla de {{ strtolower($title) }}"><table class="data-table"><caption class="sr-only">{{ $title }}</caption><thead><tr>@foreach($columns as $label)<th scope="col">{{ $label }}</th>@endforeach @if($seccion === 'pagos')<th scope="col">Acciones</th>@endif</tr></thead><tbody>@forelse($records as $record)<tr>@foreach(array_keys($columns) as $column)<td>@if(in_array($column,['precio_pactado','pago_inicial','monto','comision'],true))${{ number_format((float)$record->{$column},2) }}@else{{ $record->{$column} }}@endif</td>@endforeach @if($seccion === 'pagos')<td>@if($record->estatus === 'Pendiente' && session('haro_admin.permiso') === 'Banca')<form method="POST" action="{{ route('pagos.approve', $record) }}" data-confirm="Se aprobará el pago #{{ $record->id }} por ${{ number_format((float) $record->monto, 2) }} y se recalculará el saldo de la venta." data-confirm-title="¿Aprobar pago?" data-confirm-action="Aprobar pago">@csrf @method('PATCH')<button class="btn-primary" type="submit">Aprobar</button></form>@elseif($record->estatus === 'Aprobado')<span class="badge badge-green">APROBADO</span>@else<span class="badge badge-amber">PENDIENTE</span>@endif</td>@endif</tr>@empty<tr><td colspan="{{ count($columns) + ($seccion === 'pagos' ? 1 : 0) }}" class="text-center text-slate-500">Sin registros</td></tr>@endforelse</tbody></table></div>
 </section>
 <div class="mt-7">{{ $records->links() }}</div>
 @endsection

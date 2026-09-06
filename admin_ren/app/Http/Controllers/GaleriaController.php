@@ -6,7 +6,9 @@ use App\Models\Auto;
 use App\Models\Imagen;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class GaleriaController extends Controller
@@ -32,6 +34,48 @@ class GaleriaController extends Controller
         }
 
         return back()->with('success', 'Imágenes agregadas a la galería.');
+    }
+
+    public function assignBatch(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'assignments' => ['required', 'array', 'min:1', 'max:36'],
+            'assignments.*' => ['required', 'array:image_id,auto_id'],
+            'assignments.*.image_id' => ['required', 'integer', 'distinct'],
+            'assignments.*.auto_id' => ['nullable', 'integer'],
+        ]);
+        $assignments = collect($validated['assignments'])
+            ->filter(fn (array $assignment): bool => ! empty($assignment['auto_id']));
+
+        if ($assignments->isEmpty()) {
+            throw ValidationException::withMessages(['assignments' => 'Selecciona un auto en al menos una fotografía.']);
+        }
+
+        DB::transaction(function () use ($assignments): void {
+            $autoIds = $assignments->pluck('auto_id')->unique();
+            $autos = Auto::whereIn('id', $autoIds)->where('vendido', 0)
+                ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+            $imagenes = Imagen::whereIn('id', $assignments->pluck('image_id'))
+                ->where('id_auto', 0)->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+
+            if ($autos->count() !== $autoIds->count()) {
+                throw ValidationException::withMessages(['assignments' => 'Uno de los autos ya no está disponible. Revisa las selecciones antes de guardar.']);
+            }
+            if ($imagenes->count() !== $assignments->count()) {
+                throw ValidationException::withMessages(['assignments' => 'Una fotografía ya fue asignada o eliminada. Actualiza la galería y vuelve a seleccionar.']);
+            }
+
+            foreach ($assignments as $assignment) {
+                $imagen = $imagenes->get($assignment['image_id']);
+                $auto = $autos->get($assignment['auto_id']);
+                $imagen->update(['id_auto' => $auto->id]);
+                if (empty($auto->imagen)) {
+                    $auto->update(['imagen' => $imagen->url]);
+                }
+            }
+        });
+
+        return back()->with('success', $assignments->count().' fotografías asignadas correctamente.');
     }
 
     public function assign(Request $request, Imagen $imagen): RedirectResponse

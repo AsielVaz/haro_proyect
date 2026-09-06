@@ -26,6 +26,7 @@ Route::middleware('haro.auth')->group(function (): void {
 
     Route::get('/galeria', [GaleriaController::class, 'index'])->name('galeria.index');
     Route::post('/galeria', [GaleriaController::class, 'store'])->name('galeria.store');
+    Route::patch('/galeria/asignaciones', [GaleriaController::class, 'assignBatch'])->name('galeria.assign-batch');
     Route::patch('/galeria/{imagen}/asignar', [GaleriaController::class, 'assign'])->name('galeria.assign');
     Route::delete('/galeria/{imagen}', [GaleriaController::class, 'destroy'])->name('galeria.destroy');
 
