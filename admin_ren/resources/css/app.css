@@ -253,3 +253,26 @@
 .gallery-assignment-card { transition: border-color 180ms ease, box-shadow 180ms ease; }
 .gallery-assignment-card.has-assignment { border-color: #f0b8be; box-shadow: 0 0 0 2px #fff1f2; }
 [data-assignment-pending][hidden], [data-clear-assignment][hidden] { display: none; }
+
+.cover-library__heading { display: flex; align-items: center; gap: 12px; }
+.cover-library__icon { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid #ffe4e6; border-radius: 14px; color: #be2334; background: #fff1f2; }
+.cover-library__total { padding: 6px 11px; border: 1px solid #e2e8f0; border-radius: 20px; color: #64748b; font-size: 11px; font-weight: 600; }
+.cover-library__description { margin: -4px 0 22px; padding-bottom: 18px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px; line-height: 1.7; }
+.cover-library__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 18px; }
+.cover-card { overflow: hidden; border: 1px solid #e2e8f0; border-radius: 18px; background: #fff; transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease; }
+.cover-card:hover { transform: translateY(-3px); border-color: #cbd5e1; box-shadow: 0 12px 28px rgb(30 41 59 / 9%); }
+.cover-card.is-current { border-color: #d94351; box-shadow: 0 0 0 3px #fff1f2; }
+.cover-card__photo { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #f1f5f9; }
+.cover-card__photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 350ms ease; }
+.cover-card:hover .cover-card__photo img { transform: scale(1.04); }
+.cover-card__badge { position: absolute; left: 10px; top: 10px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid rgb(255 255 255 / 70%); border-radius: 9px; background: rgb(255 255 255 / 95%); box-shadow: 0 3px 12px rgb(15 23 42 / 8%); color: #b91c36; font-size: 10px; font-weight: 700; }
+.cover-card__badge .ui-icon { width: 14px; height: 14px; }
+.cover-card__body { padding: 13px; }
+.cover-card__meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; color: #64748b; font-size: 11px; font-weight: 600; }
+.cover-card__meta .ui-icon { width: 15px; height: 15px; color: #94a3b8; }
+.cover-card__button, .cover-card__active { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 42px; width: 100%; padding: 9px 10px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.cover-card__button { background: #f8fafc; color: #334155; }
+.cover-card__button:hover { background: #1e293b; border-color: #1e293b; color: #fff; }
+.cover-card__button .ui-icon, .cover-card__active .ui-icon { width: 15px; height: 15px; }
+.cover-card__button .ui-icon:last-child { margin-left: auto; }
+.cover-card__active { background: #fff1f2; border-color: #ffe4e6; color: #b91c36; }

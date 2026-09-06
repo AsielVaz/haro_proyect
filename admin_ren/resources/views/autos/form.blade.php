@@ -19,6 +19,34 @@
 <label class="mt-5 block"><span class="field-label">Descripción comercial</span><textarea class="field min-h-36" name="descripcion" required>{{ old('descripcion',$auto?->descripcion) }}</textarea></label>
 </section>
 
+@if($auto && $auto->imagenes->isNotEmpty())
+<section class="panel cover-library" aria-labelledby="cover-library-title">
+    <div class="panel-heading">
+        <div class="cover-library__heading"><span class="cover-library__icon"><x-icon name="image" /></span><div><p class="eyebrow">Imágenes asignadas</p><h3 id="cover-library-title">Portada de la unidad</h3></div></div>
+        <span class="cover-library__total">{{ $auto->imagenes->count() }} fotografías</span>
+    </div>
+    <p class="cover-library__description">Elige la imagen que presentará este auto en el inventario. El cambio se aplica al confirmar.</p>
+    <div class="cover-library__grid">
+        @foreach($auto->imagenes as $image)
+            <article class="cover-card {{ $auto->imagen === $image->url ? 'is-current' : '' }}">
+                <div class="cover-card__photo">
+                    <img loading="lazy" decoding="async" src="{{ $image->url }}" alt="Fotografía #{{ $image->id }} de {{ $auto->marca?->marca }} {{ $auto->modelo?->modelo }}">
+                    @if($auto->imagen === $image->url)<span class="cover-card__badge"><x-icon name="check" /> Portada actual</span>@endif
+                </div>
+                <div class="cover-card__body">
+                    <div class="cover-card__meta"><span>Foto #{{ $image->id }}</span><x-icon name="image" /></div>
+                    @if($auto->imagen === $image->url)
+                        <span class="cover-card__active"><x-icon name="check" /> Imagen principal</span>
+                    @else
+                        <button type="submit" form="cover-{{ $image->id }}" class="cover-card__button" aria-label="Usar fotografía #{{ $image->id }} como portada"><x-icon name="image" /> Elegir como portada<x-icon name="arrow" /></button>
+                    @endif
+                </div>
+            </article>
+        @endforeach
+    </div>
+</section>
+@endif
+
 <section class="panel media-library" aria-labelledby="media-library-title">
     <div class="panel-heading">
         <div><p class="eyebrow">Banco de medios</p><h3 id="media-library-title">Seleccionar de la galería</h3></div>
@@ -47,7 +75,7 @@
     </div>
 </section>
 
-@if($auto && $auto->imagenes->isNotEmpty())<section class="panel"><div class="panel-heading"><div><p class="eyebrow">Imágenes asignadas</p><h3>Portada de la unidad</h3></div></div><div class="grid grid-cols-2 gap-3 md:grid-cols-4">@foreach($auto->imagenes as $image)<div class="overflow-hidden rounded-xl border {{ $auto->imagen===$image->url ? 'border-amber-400' : 'border-slate-200' }}"><img loading="lazy" decoding="async" src="{{ $image->url }}" class="aspect-video w-full object-cover" alt="Fotografía de la unidad"><button form="cover-{{ $image->id }}" class="w-full px-2 py-2 text-xs hover:bg-slate-100">{{ $auto->imagen===$image->url ? 'Portada actual' : 'Usar como portada' }}</button></div>@endforeach</div></section>@endif
+
 </div>
 <aside class="space-y-5"><div class="panel sticky top-28"><p class="eyebrow">Publicación</p><h3 class="mt-1 text-xl font-bold">Guardar unidad</h3><p class="mt-2 text-sm text-slate-500">Los datos quedarán disponibles en inventario y estadísticas.</p><button class="btn-primary mt-6 w-full justify-center">{{ $auto ? 'Guardar cambios' : 'Registrar auto' }}</button><a href="{{ route('autos.index') }}" class="btn-secondary mt-3 w-full justify-center">Cancelar</a>@if($auto && !$auto->vendido)<button type="submit" form="sell-auto" class="mt-5 w-full rounded-xl border border-red-500/25 px-4 py-2.5 text-sm font-bold text-red-700 hover:bg-red-500/10">Marcar como vendido</button>@endif</div></aside>
 </form>
