@@ -3,12 +3,13 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-$usuarioPermiso = $_SESSION['sesionUsuario']['permiso_banca'] ?? '';
-if (!in_array($usuarioPermiso, ['Banca', 'Cashier'], true)) {
+$usuarioId = (int) ($_SESSION['sesionUsuario']['id'] ?? 0);
+$usuarioPermiso = (string) ($_SESSION['sesionUsuario']['permiso_banca'] ?? '');
+if ($usuarioId <= 0 || !in_array($usuarioPermiso, ['Banca', 'Cashier'], true)) {
     if (!headers_sent()) {
-        header('Location: ../index.php');
+        header('Location: ../login.php');
     } else {
-        echo '<script>window.location.replace("../index.php");</script>';
+        echo '<script>window.location.replace("../login.php");</script>';
     }
     exit;
 }

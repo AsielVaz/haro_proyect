@@ -1,4 +1,18 @@
-<?php header('Content-Type: text/html; charset=utf-8'); ?>
+<?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+$usuarioId = (int) ($_SESSION['sesionUsuario']['id'] ?? 0);
+$usuarioPermiso = (string) ($_SESSION['sesionUsuario']['permiso_banca'] ?? '');
+
+if ($usuarioId <= 0 || !in_array($usuarioPermiso, ['Banca', 'Cashier'], true)) {
+    header('Location: ../login.php');
+    exit;
+}
+
+header('Content-Type: text/html; charset=utf-8');
+?>
 <!DOCTYPE html>
 <html lang="es">
 

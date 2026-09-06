@@ -3,6 +3,19 @@ header('Content-Type: text/html; charset=utf-8');
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+
+$usuarioId = (int) ($_SESSION['sesionUsuario']['id'] ?? 0);
+$usuarioPermiso = (string) ($_SESSION['sesionUsuario']['permiso_banca'] ?? '');
+
+if ($usuarioId <= 0 || !in_array($usuarioPermiso, ['Banca', 'Cashier'], true)) {
+    header('Location: ../login.php');
+    exit;
+}
+
+if ($usuarioPermiso === 'Cashier') {
+    header('Location: autos-inventario.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -623,14 +636,6 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
         }
     }
 
-
-    $usuario_permiso = $_SESSION['sesionUsuario']['permiso_banca'] ?? '';
-    if ($usuario_permiso === 'Banca') {
-    } else if ($usuario_permiso === 'Cashier') {
-        echo '<script> window.location.href = "autos-inventario.php"; </script>';
-    } else {
-        echo '<script> window.location.href = "../index.php"; </script>';
-    }
     ?>
 
     <!-- LOADER -->

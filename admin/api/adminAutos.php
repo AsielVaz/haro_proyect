@@ -173,15 +173,39 @@ class AdministradorAutos extends conector
     //echo $sql;
     $this->ejecutar($sql);
   }
-  public function actualizarAuto($id, $cilindrage, $descripcion, $marca, $modelo, $transmicion, $anio, $precio, $nacionalidad, $duenio, $estatus, $kilometrage, $combustible, $interiores, $color, $cuerpo, $poder, $asientos, $consig, $idAlmacen)
+  public function actualizarAuto($id, $cilindrage, $descripcion, $marca, $modelo, $transmicion, $anio, $precio, $nacionalidad, $duenio, $estatus, $kilometrage, $combustible, $interiores, $color, $cuerpo, $poder, $asientos, $consig, $idAlmacen, $idUsuario = 0)
   {
-    $sql = "UPDATE `auto` SET `cilindrage`= '$cilindrage',`descripcion` = '$descripcion',`id_marca` = '$marca',`id_modelo` = '$modelo',
-    `id_transmision`= '$transmicion',`anio` = '$anio',`precio` = '$precio',`nacionalidad` = '$nacionalidad',`id_duenio` = '$duenio',`estatus` = '$estatus',
-    `kilometrage`='$kilometrage',`combustible` = '$combustible',`id_interiores` = $interiores,`color` = '$color',`cuerpo` = '$cuerpo',`poder` = '$poder',
-    `asientos` = '$asientos',`en_banner` = '0', `consig` = '$consig', `id_almacen` = '$idAlmacen' WHERE id = $id;";
+    $id = (int) $id;
+    $cilindrage = (int) $cilindrage;
+    $descripcion = $this->escapar((string) $descripcion);
+    $marca = (int) $marca;
+    $modelo = (int) $modelo;
+    $transmicion = (int) $transmicion;
+    $anio = (int) $anio;
+    $precio = (float) $precio;
+    $nacionalidad = $this->escapar((string) $nacionalidad);
+    $duenio = (int) $duenio;
+    $estatus = $this->escapar((string) $estatus);
+    $kilometrage = (int) $kilometrage;
+    $combustible = $this->escapar((string) $combustible);
+    $interiores = (int) $interiores;
+    $color = $this->escapar((string) $color);
+    $cuerpo = $this->escapar((string) $cuerpo);
+    $poder = $this->escapar((string) $poder);
+    $asientos = (int) $asientos;
+    $consig = (int) $consig;
+    $idAlmacen = (int) $idAlmacen;
+    $idUsuario = (int) $idUsuario;
+
+    $sql = "UPDATE `auto` SET `cilindrage` = $cilindrage, `descripcion` = '$descripcion', `id_marca` = $marca, `id_modelo` = $modelo,
+    `id_transmision` = $transmicion, `anio` = $anio, `precio` = $precio, `nacionalidad` = '$nacionalidad', `id_duenio` = $duenio, `estatus` = '$estatus',
+    `kilometrage` = $kilometrage, `combustible` = '$combustible', `id_interiores` = $interiores, `color` = '$color', `cuerpo` = '$cuerpo', `poder` = '$poder',
+    `asientos` = $asientos, `en_banner` = 0, `consig` = $consig, `id_almacen` = $idAlmacen WHERE `id` = $id;";
     $this->ejecutar($sql);
-    //SELECT `id`, `ip`, `mensaje`, `ultima_act` FROM `log_cambio_auto` WHERE 1
-    $sqlLog = "INSERT INTO `log_cambio_auto` (`id_auto`, `ip`, `mensaje`, `ultima_act`) VALUES ('$id', '" . $_SERVER['REMOTE_ADDR'] . "', 'El auto con id $id ha sido actualizado', now());";
+
+    $ip = $this->escapar(substr((string) ($_SERVER['REMOTE_ADDR'] ?? 'desconocida'), 0, 20));
+    $sqlLog = "INSERT INTO `log_cambio_auto` (`id_auto`, `ip`, `mensaje`, `ultima_act`, `id_usuario`)
+      VALUES ($id, '$ip', 'El auto con id $id ha sido actualizado', NOW(), $idUsuario);";
     $this->ejecutar($sqlLog);
   }
   public function agregarImagen($auto, $url)

@@ -4,6 +4,9 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
+if (session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
 include_once("adminAutos.php");
 include_once("adminCarHunter.php");
 include_once("adminEditor.php");
@@ -1955,10 +1958,16 @@ function crearMensajeOLD($marca, $modelo, $anio, $id, $precio, $imagen, $suscrip
 
 function procesarModificacion()
 {
-
+	$idUsuario = (int) ($_SESSION['sesionUsuario']['id'] ?? 0);
+	if ($idUsuario <= 0) {
+		http_response_code(401);
+		echo json_encode(['error' => 'La sesión expiró. Inicia sesión nuevamente.']);
+		return;
+	}
 
 	$adminAuto = new AdministradorAutos();
-	$autoModificado = $adminAuto->dameAuto($_POST['id']);
+	$id = (int) ($_POST['id'] ?? 0);
+	$autoModificado = $adminAuto->dameAuto($id);
 	$cilindrage = $_POST['cilindrage'];
 	$descripcion = $_POST['descripcion'];
 	$marca = $_POST['marca'];
@@ -1976,8 +1985,7 @@ function procesarModificacion()
 	$cuerpo = $_POST['cuerpo'];
 	$poder = $_POST['poder'];
 	$asientos = $_POST['asientos'];
-	$id = $_POST['id'];
-	$consig = $_POST['consig'];
+	$consig = $_POST['consig'] ?? '';
 	$idAlmacen = $_POST['id_almacen'];
 	if ($consig == "on") {
 		$consig = 1;
@@ -1985,12 +1993,17 @@ function procesarModificacion()
 		$consig = 0;
 	}
 
+	$admin = new AdministradorAutos();
+	$admin->actualizarAuto($id, $cilindrage, $descripcion, $marca, $modelo, $transmicion, $anio, $precio, $nacionalidad, $duenio, $estatus, $kilometrage, $combustible, $interiores, $color, $cuerpo, $poder, $asientos, $consig, $idAlmacen, $idUsuario);
+
 	if ($autoModificado->precio != $precio) {
-		notificarOferta($id, $precio);
+		try {
+			notificarOferta($id, $precio);
+		} catch (Throwable $exception) {
+			error_log('El auto se modificó, pero falló la notificación de oferta: ' . $exception->getMessage());
+		}
 	}
 
-	$admin = new AdministradorAutos();
-	$admin->actualizarAuto($id, $cilindrage, $descripcion, $marca, $modelo, $transmicion, $anio, $precio, $nacionalidad, $duenio, $estatus, $kilometrage, $combustible, $interiores, $color, $cuerpo, $poder, $asientos, $consig, $idAlmacen);
 	echo "1";
 }
 
