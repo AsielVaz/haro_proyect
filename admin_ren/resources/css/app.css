@@ -2,8 +2,102 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --color-carbon: #0a0a0b;
+    --color-asphalt: #111214;
+    --color-racing-red: #d51f2b;
+    --shadow-glow: 0 12px 32px rgb(213 31 43 / 28%);
+}
+
+@layer base {
+    body { background-image: radial-gradient(circle at 85% 5%, rgb(213 31 43 / 8%), transparent 28%), linear-gradient(135deg, #111214, #0d0e10); }
+    button, a { transition: all 180ms ease; }
+}
+
+@layer components {
+    .nav-link { @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-400 hover:bg-white/5 hover:text-white; }
+    .nav-link.active { @apply bg-gradient-to-r from-red-600/20 to-transparent text-white; box-shadow: inset 3px 0 #e02b35; }
+    .nav-icon { @apply grid size-8 place-items-center rounded-lg bg-white/5 text-amber-400; }
+    .btn-primary { @apply inline-flex items-center rounded-xl bg-racing-red px-5 py-2.5 text-sm font-bold text-white shadow-glow hover:-translate-y-0.5 hover:bg-red-500; }
+    .btn-secondary { @apply inline-flex items-center rounded-xl border border-white/10 bg-white/4 px-4 py-2.5 text-sm font-semibold text-zinc-300 hover:border-amber-400/30 hover:bg-white/8 hover:text-white; }
+    .icon-button { @apply grid size-10 place-items-center rounded-xl border border-white/10 text-zinc-400 hover:border-red-500/40 hover:text-white; }
+    .panel { @apply rounded-3xl border border-white/8 bg-white/3 p-6 shadow-2xl shadow-black/10; }
+    .panel-heading { @apply mb-6 flex items-center justify-between gap-4; }
+    .panel-heading h3 { @apply text-xl font-bold; }
+    .eyebrow { @apply text-[10px] font-bold uppercase tracking-[.2em] text-amber-400; }
+    .metric-card { @apply rounded-2xl border border-white/8 bg-gradient-to-br from-white/5 to-transparent p-5; }
+    .metric-card p { @apply text-xs font-semibold uppercase tracking-wider text-zinc-500; }
+    .metric-card strong { @apply mt-2 block text-2xl font-black; }
+    .field { @apply w-full rounded-xl border border-white/10 bg-black/25 px-4 py-2.5 text-sm text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-amber-400/55 focus:ring-3 focus:ring-amber-400/8; }
+    .field-label, .form-grid label > span { @apply mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-500; }
+    .form-grid { @apply grid gap-5 sm:grid-cols-2 lg:grid-cols-3; }
+    .badge { @apply inline-flex rounded-full px-2.5 py-1 text-[9px] font-black tracking-wider; }
+    .badge-red { @apply bg-red-500/15 text-red-400 ring-1 ring-red-500/25; }
+    .badge-amber { @apply bg-amber-400/12 text-amber-300 ring-1 ring-amber-400/20; }
+    .badge-green { @apply bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/25; }
+    .badge-blue { @apply bg-sky-500/15 text-sky-300 ring-1 ring-sky-400/25; }
+    .vehicle-card { @apply overflow-hidden rounded-3xl border border-white/8 bg-gradient-to-b from-white/5 to-white/2 shadow-xl shadow-black/10; }
+    .vehicle-actions { @apply mt-5 grid grid-cols-2 gap-2 border-t border-white/8 pt-4; }
+    .vehicle-actions form { @apply contents; }
+    .vehicle-action { @apply inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/4 px-2 py-2 text-center text-[11px] font-bold text-zinc-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/8 hover:text-white; }
+    .vehicle-action span { @apply text-sm; }
+    .vehicle-action--green { @apply border-emerald-500/20 bg-emerald-500/10 text-emerald-300 hover:border-emerald-400/40 hover:bg-emerald-500/15; }
+    .vehicle-action--amber { @apply border-amber-400/20 bg-amber-400/10 text-amber-300 hover:border-amber-300/40 hover:bg-amber-400/15; }
+    .vehicle-action--blue { @apply border-sky-400/20 bg-sky-500/10 text-sky-300 hover:border-sky-300/40 hover:bg-sky-500/15; }
+    .vehicle-action--red { @apply border-red-500/20 bg-red-500/10 text-red-300 hover:border-red-400/40 hover:bg-red-500/15; }
+    .inventory-row { @apply grid grid-cols-[88px_minmax(0,1fr)] items-center gap-4 p-4 transition hover:bg-white/3 md:grid-cols-[100px_minmax(180px,1fr)_130px_150px] xl:grid-cols-[110px_minmax(210px,1fr)_140px_160px_minmax(320px,1.6fr)]; }
+    .inventory-photo { @apply grid aspect-[4/3] w-full place-items-center overflow-hidden rounded-2xl border border-white/8 bg-black text-3xl text-zinc-800 md:aspect-[16/11]; }
+    .inventory-photo img { @apply size-full object-cover; }
+    .inventory-price span { @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-600; }
+    .inventory-price strong { @apply mt-1 block text-lg font-black text-white; }
+    .inventory-actions { @apply col-span-full grid grid-cols-2 gap-2 sm:grid-cols-3 xl:col-span-1 xl:grid-cols-2; }
+    .inventory-actions form { @apply contents; }
+    .vehicle-row { @apply flex items-center gap-3 rounded-2xl border border-white/6 bg-black/20 p-3 hover:border-red-500/25; }
+    .vehicle-row p { @apply text-xs text-zinc-500; }
+    .vehicle-row span { @apply text-sm font-bold text-amber-400; }
+    .vehicle-thumb { @apply grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-black text-zinc-700; }
+    .vehicle-thumb img { @apply size-full object-cover; }
+    .gallery-choice { @apply relative cursor-pointer overflow-hidden rounded-xl border border-white/8; }
+    .gallery-choice img { @apply aspect-[4/3] w-full object-cover opacity-70; }
+    .gallery-choice span { @apply absolute inset-x-2 bottom-2 rounded-lg bg-black/75 py-1 text-center text-xs; }
+    .gallery-choice:has(input:checked) { @apply border-amber-400 ring-2 ring-amber-400/25; }
+    .gallery-choice:has(input:checked) img { @apply opacity-100; }
+    .data-table { @apply w-full min-w-[720px] text-left text-sm; }
+    .data-table th { @apply border-y border-white/8 bg-black/20 px-5 py-3 text-[10px] uppercase tracking-wider text-zinc-500; }
+    .data-table td { @apply border-b border-white/6 px-5 py-4 text-zinc-300; }
+    .data-table tr:hover td { @apply bg-white/2; }
+    .liquid-alert-stack { @apply pointer-events-none fixed right-4 top-4 z-[100] flex w-[min(420px,calc(100vw-2rem))] flex-col gap-3 sm:right-6 sm:top-6; }
+    .liquid-alert { @apply pointer-events-auto relative flex translate-x-8 items-start gap-3 overflow-hidden rounded-[1.35rem] border border-white/20 bg-zinc-950/65 p-4 opacity-0 shadow-2xl shadow-black/35 backdrop-blur-2xl transition duration-500; box-shadow: inset 0 1px 0 rgb(255 255 255 / 18%), 0 24px 70px rgb(0 0 0 / 42%); }
+    .liquid-alert.is-visible { @apply translate-x-0 opacity-100; }
+    .liquid-alert.is-leaving { @apply translate-x-8 scale-95 opacity-0; }
+    .liquid-alert__shine { @apply pointer-events-none absolute -left-10 -top-16 size-36 rounded-full bg-white/12 blur-2xl; }
+    .liquid-alert__icon { @apply relative grid size-10 shrink-0 place-items-center rounded-2xl border border-white/20 text-lg font-black text-white shadow-lg; }
+    .liquid-alert--success .liquid-alert__icon { @apply bg-emerald-500/65 shadow-emerald-950/40; }
+    .liquid-alert--warning .liquid-alert__icon { @apply bg-amber-400/65 shadow-amber-950/40; }
+    .liquid-alert--error .liquid-alert__icon { @apply bg-red-500/70 shadow-red-950/40; }
+    .liquid-alert__title { @apply relative pr-7 text-sm font-black text-white; }
+    .liquid-alert__message { @apply relative mt-1 text-xs leading-5 text-zinc-300; }
+    .liquid-alert__details { @apply relative mt-2 list-disc space-y-1 pl-4 text-xs text-zinc-400; }
+    .liquid-alert__close { @apply absolute right-3 top-2 grid size-7 place-items-center rounded-full text-lg text-zinc-500 hover:bg-white/10 hover:text-white; }
+    .liquid-alert__timer { @apply absolute inset-x-0 bottom-0 h-0.5 origin-left bg-current; animation: liquid-timer 6s linear forwards; }
+    .liquid-alert--success .liquid-alert__timer { @apply text-emerald-400; }
+    .liquid-alert--warning .liquid-alert__timer { @apply text-amber-400; }
+    .liquid-alert--error .liquid-alert__timer { @apply text-red-400; }
+    .liquid-confirm { @apply m-auto w-[min(460px,calc(100vw-2rem))] overflow-hidden rounded-[2rem] border border-white/20 bg-zinc-950/70 p-7 text-white opacity-0 shadow-2xl backdrop-blur-3xl transition duration-300; box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 30px 100px rgb(0 0 0 / 65%); }
+    .liquid-confirm[open] { @apply scale-100 opacity-100; }
+    .liquid-confirm::backdrop { background: rgb(3 3 5 / 72%); backdrop-filter: blur(10px); }
+    .liquid-confirm__orb { @apply pointer-events-none absolute -right-14 -top-20 size-52 rounded-full bg-red-500/20 blur-3xl; }
+    .liquid-confirm__icon { @apply grid size-14 place-items-center rounded-2xl border border-amber-300/30 bg-amber-400/15 text-2xl font-black text-amber-300; box-shadow: inset 0 1px 0 rgb(255 255 255 / 22%); }
+    .liquid-confirm.is-danger .liquid-confirm__icon { @apply border-red-400/30 bg-red-500/20 text-red-300; }
+    .liquid-confirm.is-danger [data-confirm-accept] { @apply bg-red-600; }
+}
+
+@keyframes liquid-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .liquid-alert, .liquid-confirm { transition-duration: 0.01ms; }
+    .liquid-alert__timer { animation: none; }
 }
