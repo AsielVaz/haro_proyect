@@ -1,0 +1,32 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Never expose hidden files or Laravel's private directories.
+    RewriteRule (^|/)\. - [F]
+    RewriteRule ^(?:app|bootstrap|config|database|node_modules|resources|routes|storage|tests|vendor)(?:/|$) - [F,NC]
+    RewriteRule ^(?:artisan|AGENTS\.md|CLAUDE\.md|README\.md|composer\.(?:json|lock)|package(?:-lock)?\.json|phpunit\.xml|vite\.config\.js|boost\.json)$ - [F,NC]
+
+    # Keep existing public URLs working and let public/.htaccess handle them.
+    RewriteRule ^public(?:/|$) - [L]
+
+    # Serve the compiled frontend and brand assets without public in the URL.
+    RewriteRule ^((?:build|images|fonts)/.+\.(?:css|js|mjs|map|json|png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|otf))$ public/$1 [L,NC]
+    RewriteRule ^(favicon\.ico|robots\.txt)$ public/$1 [L,NC]
+
+    # Use the root entry point so generated routes also omit public.
+    RewriteRule ^index\.php$ - [END]
+    RewriteRule ^ index.php [END]
+</IfModule>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
