@@ -39,4 +39,6 @@ Route::middleware('haro.auth')->group(function (): void {
     Route::get('/operaciones/{seccion}', [OperacionController::class, 'index'])->whereIn('seccion', ['clientes', 'ventas', 'pagos', 'almacenes', 'car-hunter', 'usuarios'])->name('operaciones.index');
     Route::post('/operaciones/{seccion}', [OperacionController::class, 'store'])->whereIn('seccion', ['clientes', 'ventas', 'pagos', 'almacenes', 'car-hunter', 'usuarios'])->name('operaciones.store');
     Route::patch('/operaciones/pagos/{pago}/aprobar', [OperacionController::class, 'approvePayment'])->name('pagos.approve');
+    Route::patch('/operaciones/{seccion}/{registro}', [OperacionController::class, 'update'])->whereIn('seccion', ['clientes', 'almacenes', 'usuarios'])->whereNumber('registro')->name('operaciones.update');
+    Route::delete('/operaciones/{seccion}/{registro}', [OperacionController::class, 'destroy'])->whereIn('seccion', ['clientes', 'almacenes', 'usuarios'])->whereNumber('registro')->name('operaciones.destroy');
 });

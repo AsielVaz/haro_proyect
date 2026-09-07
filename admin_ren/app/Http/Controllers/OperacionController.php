@@ -15,12 +15,22 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class OperacionController extends Controller
 {
     public function index(Request $request, string $seccion): View
     {
+        $editable = in_array($seccion, ['clientes', 'almacenes', 'usuarios'], true);
+        $canManage = $seccion !== 'usuarios' || session('haro_admin.permiso') === 'Banca';
+        $editing = null;
+        if ($editable && $request->filled('editar')) {
+            abort_unless($canManage, 403);
+            $request->validate(['editar' => ['integer', 'min:1']]);
+            $editing = $this->record($seccion, $request->integer('editar'));
+        }
         [$title, $columns, $query] = match ($seccion) {
             'clientes' => ['Clientes', ['id' => 'ID', 'nombre' => 'Nombre', 'apellidos' => 'Apellidos', 'email' => 'Correo', 'telefono' => 'Teléfono', 'comision' => 'Comisión'], ClienteBanca::query()->orderByDesc('id')],
             'ventas' => ['Ventas', ['id' => 'Folio', 'id_auto' => 'Auto', 'id_cliente' => 'Cliente', 'precio_pactado' => 'Precio pactado', 'pago_inicial' => 'Inicial', 'estatus_venta' => 'Estado', 'fecha_inserta' => 'Fecha'], Venta::query()->when($request->filled('estado'), fn ($query) => $query->where('estatus_venta', $request->string('estado')->toString()))->orderByDesc('id')],
@@ -33,7 +43,7 @@ class OperacionController extends Controller
         /** @var LengthAwarePaginator $records */
         $records = $query->paginate(30)->withQueryString();
 
-        return view('operaciones.index', compact('title', 'columns', 'records', 'seccion') + [
+        return view('operaciones.index', compact('title', 'columns', 'records', 'seccion', 'editable', 'canManage', 'editing') + [
             'autos' => in_array($seccion, ['ventas'], true) ? Auto::with(['marca:id,marca', 'modelo:id,modelo'])->where('vendido', 0)->orderByDesc('id')->get() : collect(),
             'clientes' => $seccion === 'ventas' ? ClienteBanca::orderBy('nombre')->get() : collect(),
             'ventas' => $seccion === 'pagos' ? Venta::orderByDesc('id')->get() : collect(),
@@ -42,6 +52,7 @@ class OperacionController extends Controller
 
     public function store(Request $request, string $seccion): RedirectResponse
     {
+        abort_if($seccion === 'usuarios' && session('haro_admin.permiso') !== 'Banca', 403);
         match ($seccion) {
             'clientes' => $this->createClient($request),
             'almacenes' => $this->createWarehouse($request),
@@ -73,20 +84,76 @@ class OperacionController extends Controller
         return back()->with('success', 'Pago aprobado correctamente.');
     }
 
-    private function createClient(Request $request): ClienteBanca
+    private function record(string $seccion, int $registro): ClienteBanca|Almacen|UsuarioHaro
+    {
+        return match ($seccion) {
+            'clientes' => ClienteBanca::findOrFail($registro),
+            'almacenes' => Almacen::findOrFail($registro),
+            'usuarios' => UsuarioHaro::findOrFail($registro),
+            default => abort(404),
+        };
+    }
+
+    public function update(Request $request, string $seccion, int $registro): RedirectResponse
+    {
+        abort_if($seccion === 'usuarios' && session('haro_admin.permiso') !== 'Banca', 403);
+        $record = $this->record($seccion, $registro);
+        if ($seccion === 'usuarios' && (int) session('haro_admin.id') === $registro && $request->input('permiso_banca') !== 'Banca') {
+            throw ValidationException::withMessages(['permiso_banca' => 'No puedes retirar el perfil Banca de tu propia cuenta.']);
+        }
+        match ($seccion) {
+            'clientes' => $this->createClient($request, $record),
+            'almacenes' => $this->createWarehouse($request, $record),
+            'usuarios' => $this->createUser($request, $record),
+        };
+
+        return redirect()->route('operaciones.index', $seccion)->with('success', 'Registro actualizado correctamente.');
+    }
+
+    public function destroy(string $seccion, int $registro): RedirectResponse
+    {
+        abort_if($seccion === 'usuarios' && session('haro_admin.permiso') !== 'Banca', 403);
+        $record = $this->record($seccion, $registro);
+        $blocked = match ($seccion) {
+            'clientes' => Venta::where('id_cliente', $registro)->exists() || Auto::where('id_duenio', $registro)->exists(),
+            'almacenes' => Auto::where('id_almacen', $registro)->exists(),
+            'usuarios' => (int) session('haro_admin.id') === $registro
+                || Venta::where('usuario_inserta', $registro)->exists()
+                || Pago::where('usuario_inserta', $registro)->orWhere('usuario_aprueba', $registro)->exists()
+                || DB::table('log_cambio_auto')->where('id_usuario', $registro)->exists(),
+        };
+        if ($blocked) {
+            return back()->withErrors(['registro' => 'No se puede eliminar: el registro tiene operaciones asociadas o corresponde a tu cuenta actual.']);
+        }
+        $record->delete();
+
+        return redirect()->route('operaciones.index', $seccion)->with('success', 'Registro eliminado correctamente.');
+    }
+
+    private function createClient(Request $request, ?ClienteBanca $record = null): ClienteBanca
     {
         $data = $request->validate(['nombre' => ['required', 'string', 'max:50'], 'apellidos' => ['required', 'string', 'max:100'], 'email' => ['required', 'email', 'max:100'], 'telefono' => ['required', 'string', 'max:20'], 'comision' => ['nullable', 'numeric', 'min:0']]);
         $data['comision'] ??= 0;
+        if ($record) {
+            $record->update($data);
+
+            return $record;
+        }
         $data['imagen'] = '';
 
         return ClienteBanca::create($data);
     }
 
-    private function createWarehouse(Request $request): Almacen
+    private function createWarehouse(Request $request, ?Almacen $record = null): Almacen
     {
         $data = $request->validate(['des_gen' => ['required', 'string', 'max:100'], 'direccion' => ['required', 'string', 'max:350'], 'cp' => ['required', 'string', 'max:15'], 'lat' => ['nullable', 'numeric'], 'lon' => ['nullable', 'numeric']]);
         $data['lat'] ??= 0;
         $data['lon'] ??= 0;
+        if ($record) {
+            $record->update($data);
+
+            return $record;
+        }
 
         return Almacen::create($data);
     }
@@ -101,9 +168,18 @@ class OperacionController extends Controller
         return CarHunter::create($data);
     }
 
-    private function createUser(Request $request): UsuarioHaro
+    private function createUser(Request $request, ?UsuarioHaro $record = null): UsuarioHaro
     {
-        $data = $request->validate(['nombre' => ['required', 'string', 'max:45'], 'email' => ['required', 'email', 'max:45', 'unique:usuario,email'], 'password' => ['required', 'string', 'min:6'], 'telefono' => ['nullable', 'string', 'max:45'], 'permiso_banca' => ['required', 'in:Banca,Cashier']]);
+        $data = $request->validate(['nombre' => ['required', 'string', 'max:45'], 'email' => ['required', 'email', 'max:45', Rule::unique('usuario', 'email')->ignore($record)], 'password' => [$record ? 'nullable' : 'required', 'string', 'min:6'], 'telefono' => ['nullable', 'string', 'max:45'], 'permiso_banca' => ['required', 'in:Banca,Cashier']]);
+        if ($record) {
+            $attributes = ['nombre' => $data['nombre'], 'email' => $data['email'], 'telefono' => $data['telefono'] ?? '', 'permiso_banca' => $data['permiso_banca']];
+            if (! empty($data['password'])) {
+                $attributes['contrasena'] = sha1($data['password']);
+            }
+            $record->update($attributes);
+
+            return $record;
+        }
 
         return UsuarioHaro::create(['nombre' => $data['nombre'], 'email' => $data['email'], 'contrasena' => sha1($data['password']), 'telefono' => $data['telefono'] ?? '', 'permiso_banca' => $data['permiso_banca'], 'permiso' => 100, 'tipo_usuario' => 100]);
     }
