@@ -17,6 +17,7 @@ $suscriptor = $adminCarHunter->dameSuscriptor($notificacion->idAuto);
 //echo json_encode($suscriptor);
 $cantidadImagenes = count($auto->imagenes);
 
+echo 'Enviando auto con id ' . $auto->id . ' a suscriptor con id ' . $suscriptor->id . ' y correo ' . $suscriptor->email . ' y cantidad de imagenes ' . $cantidadImagenes;
 
 
 if ((($auto->imagen != '' && $auto->imagen != null) || $cantidadImagenes > 0 ) && $suscriptor->email != '' && $suscriptor->email != null) {
