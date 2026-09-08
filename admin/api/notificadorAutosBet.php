@@ -11,9 +11,9 @@ $adminCarHunter = new AdministradorCarHunter();
 $notificacion = $adminCarHunter->dameNotificacionesSinNotificar();
 
 //echo json_encode($notificacion);
-$auto = $adminAutos->dameAutoConImagenes($notificacion->idSuscriptor);
+$auto = $adminAutos->dameAutoConImagenes($notificacion->idAuto);
 //echo json_encode($auto);
-$suscriptor = $adminCarHunter->dameSuscriptor($notificacion->idAuto);
+$suscriptor = $adminCarHunter->dameSuscriptor($notificacion->idSuscriptor);
 //echo json_encode($suscriptor);
 $cantidadImagenes = count($auto->imagenes);
 
